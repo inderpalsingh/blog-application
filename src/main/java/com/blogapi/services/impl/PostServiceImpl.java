@@ -47,12 +47,11 @@ public class PostServiceImpl implements PostService {
 
     // This method converts the filename to full URL
     public PostDto createBaseUrl(Post post) {
-        System.out.println("Original imageUrl: " + post.getImageUrl());
         PostDto postDto = modelMapper.map(post, PostDto.class);
 
         // Convert image filename to full URL
         if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
-            String imageUrl = baseUrl + "/api/images/" + post.getImageUrl();
+            String imageUrl = baseUrl + "/images/" + post.getImageUrl();
             postDto.setImageUrl(imageUrl);
             System.out.println("imageUrl: " + imageUrl);
         } else {
@@ -99,6 +98,7 @@ public class PostServiceImpl implements PostService {
         }
 
         post.setTitle(postDto.getTitle());
+        post.setImageUrl(postDto.getImageUrl());
         post.setContent(postDto.getContent());
         post.setUpdatedAt(postDto.getUpdateAt());
         Post updatedPost = postRepository.save(post);
