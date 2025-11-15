@@ -1,5 +1,6 @@
 package com.blogapi.entities;
 
+import com.blogapi.type.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

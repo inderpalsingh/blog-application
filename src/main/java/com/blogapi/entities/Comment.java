@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -19,6 +21,8 @@ public class Comment {
 
     @NotEmpty
     private String comments;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "post_id")

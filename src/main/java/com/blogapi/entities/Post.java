@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,14 +26,14 @@ public class Post {
     @Column(name = "post_title", length = 100, nullable = false)
     private String title;
 
-    @Column(length = 10000)
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String imageName;
+    private String imageUrl;
 
-    private Date createAt;
+    private LocalDateTime createAt;
 
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

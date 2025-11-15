@@ -1,11 +1,8 @@
 package com.blogapi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +10,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostDto {
 
     private Integer postId;
@@ -21,11 +19,11 @@ public class PostDto {
 
     private String content;
 
-    private String imageName;
+    private String imageUrl;
 
-    private Date createAt;
+    private LocalDateTime createAt = LocalDateTime.now();
 
-    private Date updateAt = new Date();
+    private LocalDateTime updateAt= LocalDateTime.now();
 
     private CategoryDto category;
 

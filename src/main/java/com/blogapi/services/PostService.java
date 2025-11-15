@@ -3,15 +3,19 @@ package com.blogapi.services;
 
 import com.blogapi.dto.CustomPageResponse;
 import com.blogapi.dto.PostDto;
+import com.blogapi.entities.Post;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface PostService {
 
-    PostDto createPost(PostDto postDto, Integer userId, Integer categoryId);
 
 
-    PostDto updatePost(Integer postId, PostDto postDto);
+    PostDto createPost(PostDto postDto, Integer userId, Integer categoryId, MultipartFile file);
+
+
+    PostDto updatePost(Integer postId, PostDto postDto, MultipartFile file);
 
 
     void delete(Integer postId);
@@ -31,5 +35,7 @@ public interface PostService {
 
     List<PostDto> searchPost(String keyword);
 
+
+    PostDto updatePostImage(Integer id, MultipartFile imageFile);
 
 }
