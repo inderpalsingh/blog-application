@@ -1,5 +1,5 @@
 app:
-  base-url: http://localhost:10000
+  base-url: http://192.168.29.200:10000
 
 server:
   port: 10000
@@ -35,4 +35,4 @@ spring:
 
 # File Storage Configuration
 file:
-  upload-dir: uploads/
+  upload-dir: uploads

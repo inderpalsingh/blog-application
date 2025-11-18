@@ -36,15 +36,18 @@ public class SecurityConfig {
     }
 
 
+
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable());
+                .cors(Customizer.withDefaults());
 
         httpSecurity.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/public/**").permitAll()
-                .requestMatchers("/auth/**","/api/users/register","/auth/image/**").permitAll()
+                .requestMatchers("/auth/**","/api/users/register","/auth/image/**","/images/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
 
                 .anyRequest().authenticated());
