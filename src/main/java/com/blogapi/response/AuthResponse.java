@@ -10,12 +10,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
+public class AuthResponse {
 
 //    UserDto user;
-//    private String name;
     private String accessToken;
     private String refreshToken;
-
+    private int id;
     private String email;
+    private String name;
+    private int age;
+    private String gender;
 }

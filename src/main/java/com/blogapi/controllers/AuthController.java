@@ -5,7 +5,7 @@ import com.blogapi.entities.User;
 import com.blogapi.exceptions.ResourceNotFoundException;
 import com.blogapi.repositories.UserRepository;
 import com.blogapi.response.LoginRequest;
-import com.blogapi.response.LoginResponse;
+import com.blogapi.response.AuthResponse;
 import com.blogapi.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -45,11 +45,11 @@ public class AuthController {
         this.userRepository = userRepository;
     }
 
-    private Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
 
         try {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
@@ -62,14 +62,20 @@ public class AuthController {
 
             User user = userRepository.findByEmail(loginRequest.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-            LoginResponse loginResponse = new LoginResponse(
+
+
+            AuthResponse authResponse = new AuthResponse(
                     accessToken,
                     refreshToken,
-                    user.getEmail()
+                    user.getId(),
+                    user.getEmail(),
+                    user.getName(),
+                    user.getAge(),
+                    user.getGender()
 
 
             );
-            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            return new ResponseEntity<>(authResponse, HttpStatus.OK);
 
         } catch (BadCredentialsException bd) {
             System.out.println("Invalid Credentials");
