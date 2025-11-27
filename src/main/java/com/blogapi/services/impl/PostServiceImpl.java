@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -70,6 +71,7 @@ public class PostServiceImpl implements PostService {
         Post mappedPost = modelMapper.map(postDto, Post.class);
         mappedPost.setUser(getUser);
         mappedPost.setCategory(getCategory);
+        mappedPost.setCreateAt(LocalDateTime.now());
 
         // Handle image upload
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -83,25 +85,31 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto updatePost(Integer postId, PostDto postDto, MultipartFile file) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
-        if (file != null && !file.isEmpty()) {
-            // Delete old image if exists
-            if (post.getImageUrl() != null) {
-                try {
-                    fileStorageService.deleteFile(post.getImageUrl());
-                } catch (Exception e) {
-                    log.warn("Failed to delete old image: {}", post.getImageUrl(), e);
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+    public PostDto updatePost(Integer postId, PostDto postDto, MultipartFile imageFile) {
+        Post existingPost = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
 
-        post.setTitle(postDto.getTitle());
-        post.setImageUrl(postDto.getImageUrl());
-        post.setContent(postDto.getContent());
-        post.setUpdatedAt(postDto.getUpdateAt());
-        Post updatedPost = postRepository.save(post);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Delete old image if exists
+            if (existingPost.getImageUrl() != null) {
+                try {
+                    fileStorageService.deleteFile(existingPost.getImageUrl());
+                } catch (Exception e) {
+                    log.warn("Failed to delete old image: {}", existingPost.getImageUrl(), e);
+                                    }
+            }
+            // Upload new image
+            String newImageUrl = fileStorageService.storeFile(imageFile);
+            existingPost.setImageUrl(newImageUrl);
+        } else {
+            // Preserve existing image URL
+            log.debug("No new image provided, preserving existing image: {}", existingPost.getImageUrl());
+        }
+        existingPost.setTitle(postDto.getTitle());
+        existingPost.setContent(postDto.getContent());
+        existingPost.setUpdatedAt(LocalDateTime.now());
+
+        Post updatedPost = postRepository.save(existingPost);
+        log.info("✅ UPDATE COMPLETE - Post {} image: {}", postId, updatedPost.getImageUrl());
         return modelMapper.map(updatedPost, PostDto.class);
     }
 
