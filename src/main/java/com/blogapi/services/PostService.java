@@ -15,7 +15,8 @@ public interface PostService {
     PostDto createPost(PostDto postDto, Integer userId, Integer categoryId, MultipartFile file);
 
 
-    PostDto updatePost(Integer postId, PostDto postDto, MultipartFile file);
+//    PostDto updatePost(Integer postId, PostDto postDto, MultipartFile file);
+    PostDto updatePost(Integer postId, String postDtoJson, MultipartFile imageFile);
 
 
     void delete(Integer postId);

@@ -31,6 +31,7 @@ public class Post {
 
     private String imageUrl;
 
+    @Column(nullable = false)
     private LocalDateTime createAt;
 
     private LocalDateTime updatedAt;

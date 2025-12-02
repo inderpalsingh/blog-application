@@ -20,9 +20,9 @@ public class PostDto {
 
     private String imageUrl;
 
-    private LocalDateTime createAt = LocalDateTime.now();
+    private LocalDateTime createAt;
 
-    private LocalDateTime updateAt= LocalDateTime.now();
+    private LocalDateTime updateAt;
 
     private CategoryDto category;
 
